@@ -56,34 +56,56 @@ Fixpoint evenum (n:nat) : bool :=
 
 Definition oddnum (n:nat) : bool   :=   negb (evenum n).
 
-Example test_nonzeros:
-  nonzeros [0;1;0;2;3;0;0] = [1;2;3].
-Proof. 
-  simpl.
-  reflexivity.
-Qed.
+Fixpoint eq_nat (n m : nat) : bool :=
+  match n with
+  | O => match m with
+	  | O => true
+  	| S m' => false
+	  end
+    | S n' => match m with
+	    | O => false
+	    | S m' => eq_nat n' m'
+	    end
+  end.
 
-Fixpoint oddmembers (l:natlist) : natlist :=
-  match l with
-  | nil => nil
-  | cons h t => match oddnum h with
-              | true => cons h (oddmembers t)
-              | false => oddmembers t
+Fixpoint app (l1 l2 : natlist) : natlist :=
+  match l1 with
+  | nil    => l2
+  | h :: t => h :: (app t l2)
+  end.
+
+Definition bag := natlist.
+
+Fixpoint count (v:nat) (s:bag) : nat :=
+  match s with
+  | nil => O
+  | h :: t => match (eq_nat h v) with
+              | true => S (count v t)
+              | false => count v t
               end
-  end. 
+  end.
 
-Example test_oddmembers:
-  oddmembers [0;1;0;2;3;0;0] = [1;3].
+Definition add (n:nat) (t:bag) : bag :=
+  n :: t.
+
+Theorem eq_nat_refl : forall n : nat,
+  true = eq_nat n n.
 Proof.
-  simpl. reflexivity.
+  intros n. induction n.
+  - simpl. reflexivity.
+  - rewrite -> IHn. simpl. reflexivity.
 Qed.
 
-Definition countoddmembers (l:natlist) : nat :=
-  length (oddmembers l).
+(**** NEW ****)
 
-Example test_countoddmembers1:  countoddmembers [1;0;3;1;4;5] = 4.
-  Proof. reflexivity.  Qed.
-Example test_countoddmembers2:  countoddmembers [0;2;4] = 0.
-  Proof. reflexivity.  Qed.
-Example test_countoddmembers3:  countoddmembers nil = 0.
-  Proof. reflexivity.  Qed.
+(*  Adding a value to a bag should increase the value's count by one. *)
+
+Theorem add_count: forall (n : nat) (s : bag),
+  count n (add n s) = S (count n s).
+Proof.
+  intros n s.
+  destruct s as [| l].
+  - simpl. rewrite <- eq_nat_refl.
+  reflexivity.
+  - simpl. rewrite <- eq_nat_refl. reflexivity.
+Qed.
