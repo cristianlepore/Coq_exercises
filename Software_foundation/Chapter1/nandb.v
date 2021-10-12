@@ -15,7 +15,7 @@ Definition negb (b:bool) : bool :=
   end.
 
 Definition nandb (b1:bool) (b2:bool) : bool :=
-  if b1 then negb b2
+  if (andb b1 b2) then negb (andb b1 b2)
   else true.
 
 Example test_nandb1:               (nandb true false) = true.

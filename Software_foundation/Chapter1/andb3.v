@@ -11,10 +11,8 @@ Definition andb (b1:bool) (b2:bool) : bool :=
 
 
 Definition andb3 (b1:bool) (b2:bool) (b3:bool) : bool :=
-  match b1 with
-    | false => false
-    | true => (andb b2 b3)
-  end.
+  if andb b1 b2 then b3
+  else false.
 
 Example test_andb31:                 (andb3 true true true) = true.
   Proof. simpl. reflexivity.  Qed.

@@ -3,9 +3,11 @@ Theorem andb_true_elim2 : forall b c : bool,
 
 Proof.
   intros b c. 
-  destruct c eqn:Ec.
-  - intros H1. reflexivity.
-  - destruct b eqn:Eb.
+  destruct b.
+  - simpl. destruct c.
+    -- simpl. intros H. reflexivity.
     -- simpl. intros H. rewrite H. reflexivity.
+  - simpl. destruct c. 
+    -- simpl. intros H. reflexivity.
     -- simpl. intros H. rewrite H. reflexivity.
 Qed.

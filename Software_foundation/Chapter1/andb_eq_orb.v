@@ -6,8 +6,8 @@ Proof.
   intros b c. destruct b eqn: Eb.
   - simpl. destruct c eqn: Ec.
     -- reflexivity.
-    -- rewrite <- Ec. rewrite <- Eb. intros H. rewrite <- H. reflexivity.
+    -- intros. rewrite <- H. reflexivity.
   - simpl. destruct c eqn: Ec.
-    -- rewrite <- Ec. rewrite <- Eb. intros H. rewrite <- H. reflexivity.
+    -- intros. rewrite <- H. reflexivity.
     -- intros H. reflexivity.
 Qed.
