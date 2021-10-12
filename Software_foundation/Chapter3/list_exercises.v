@@ -158,13 +158,15 @@ Qed.
 Theorem rev_app_distr: forall l1 l2 : natlist,
   rev (l1 ++ l2) = rev l2 ++ rev l1.
 Proof.
-  intros l1 l2.
-  induction l1 as [| n l1'].
-  - simpl. rewrite app_nil_r. reflexivity.
-  - simpl. induction l2 as [| n' l2'].
-    -- simpl. rewrite IHl1'. simpl. reflexivity.
-    -- simpl. rewrite IHl1'. simpl.
-Admitted.
+  intros.
+  induction l1 as [| h1 t1].
+  - simpl. destruct l2 as [| h2 t2].
+    + simpl. reflexivity.
+    + simpl. rewrite -> app_nil_r. reflexivity.
+  - simpl. destruct l2 as [| h2 t2].
+    + simpl. rewrite -> app_nil_r. reflexivity.
+    + rewrite -> IHt1. simpl. rewrite -> app_ass. reflexivity.
+Qed.
 
 Theorem rev_involutive : forall l : natlist,
   rev (rev l) = l.
@@ -174,7 +176,6 @@ Proof.
   - simpl. reflexivity.
   - simpl.
 Admitted.
-Search app.
 
 Theorem app_assoc4 : forall l1 l2 l3 l4 : natlist,
   l1 ++ (l2 ++ (l3 ++ l4)) = ((l1 ++ l2) ++ l3) ++ l4.

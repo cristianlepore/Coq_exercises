@@ -20,5 +20,5 @@ Lemma double_plus : forall n, double n = n + n .
 Proof.
   intros n. induction n.
   - simpl. reflexivity.
-  - simpl. rewrite IHn. rewrite plus_n_Sm. reflexivity.
+  - simpl. rewrite <- plus_n_Sm. rewrite IHn. reflexivity.
 Qed.

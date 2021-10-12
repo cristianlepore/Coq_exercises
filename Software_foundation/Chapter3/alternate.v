@@ -1,30 +1,5 @@
 Module NatList.
 
-Inductive natprod : Type :=
-  | pair (n1 n2 : nat).
-
-Notation "( x , y )" := (pair x y).
-
-Definition fst (p : natprod) : nat :=
-  match p with
-  | pair x y => x
-  end.
-
-Definition snd (p : natprod) : nat :=
-  match p with
-  | pair x y => y
-  end.
-
-Definition snd' (p : natprod) : nat :=
-  match p with
-  | (x,y) => y
-  end.
-
-Definition swap_pair (p : natprod) : natprod :=
-  match p with
-  | (x,y) => (y,x)
-  end.
-
 Inductive natlist : Type :=
   | nil
   | cons (n : nat) (l : natlist).
@@ -34,27 +9,6 @@ Notation "x :: l" := (cons x l)
 Notation "[ ]" := nil.
 Notation "[ x ; .. ; y ]" := (cons x .. (cons y nil) ..).
 
-Fixpoint length (l:natlist) : nat :=
-  match l with
-  | nil => O
-  | h :: t => S (length t)
-  end.
-
-Fixpoint nonzeros (l:natlist) : natlist :=
-  match l with
-  | nil => nil
-  | cons O t => nonzeros t
-  | cons h t => cons h (nonzeros t)
-  end.
-
-Fixpoint evenum (n:nat) : bool :=
-  match n with
-  | O        => true
-  | S O      => false
-  | S (S n') => evenum n'
-  end.
-
-Definition oddnum (n:nat) : bool   :=   negb (evenum n).
 
 Fixpoint alternate (l1 l2 : natlist) : natlist :=
   match l1, l2 with

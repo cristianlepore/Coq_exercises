@@ -14,7 +14,7 @@ Notation "x =? y" := (eqb x y) (at level 70) : nat_scope.
 Theorem eqb_refl : forall n : nat,
   (n =? n) = true.
 Proof.
-  intros n.
+  intros.
   induction n.
   - simpl. reflexivity.
   - simpl. rewrite IHn. reflexivity.

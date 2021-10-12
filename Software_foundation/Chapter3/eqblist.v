@@ -104,7 +104,15 @@ Fixpoint eqblist (l1 l2 : natlist) : bool :=
     end.
 
 Theorem eqblist_refl : forall l:natlist,
-  true = eqblist l l. Admitted.
+  true = eqblist l l.
+Proof.
+  intros.
+  induction l as [| h t IH].
+  - simpl. reflexivity.
+  - simpl. induction h as [| h' IH'].
+    + simpl. rewrite <- IH. reflexivity.
+    + simpl. rewrite <- IH'. reflexivity.
+Qed.
 
 Example test_eqblist1 :
   (eqblist nil nil = true).

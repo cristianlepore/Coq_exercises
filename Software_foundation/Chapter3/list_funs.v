@@ -43,7 +43,7 @@ Fixpoint length (l:natlist) : nat :=
 Fixpoint nonzeros (l:natlist) : natlist :=
   match l with
   | nil => nil
-  | cons O t => nonzeros t
+  | O :: t => nonzeros t
   | cons h t => cons h (nonzeros t)
   end.
 
