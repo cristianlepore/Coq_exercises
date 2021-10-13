@@ -4,7 +4,7 @@ Proof.
   intros.
   induction l as [| h t IH].
   - simpl. reflexivity.
-  - simpl. rewrite IH. simpl. reflexivity.
+  - simpl. rewrite IH. reflexivity.
 Qed.
 
 Theorem app_assoc : forall A (l m n:list A),
