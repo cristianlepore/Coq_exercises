@@ -8388,7 +8388,7 @@ Proof.
 Theorem ev_ev__ev : forall n m,
   ev (n+m) -> ev n -> ev m.
 Proof.
-   intros.
+  intros.
   induction H0.
   - apply H.
   - simpl in H.
@@ -8529,12 +8529,20 @@ Inductive next_ev : nat -> nat -> Prop :=
 
 Lemma le_trans : forall m n o, m <= n -> n <= o -> m <= o.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros.
+  induction H0.
+  - apply H.
+  - apply le_S. apply IHle.
+Qed.
 
 Theorem O_le_n : forall n,
   0 <= n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros.
+  induction n as [| n' IH].
+  - apply le_n.
+  - apply le_S. apply IH.
+Qed.
 
 Theorem n_le_m__Sn_le_Sm : forall n m,
   n <= m -> S n <= S m.
@@ -8625,8 +8633,11 @@ Proof.
 Theorem leb_iff : forall n m,
   n <=? m = true <-> n <= m.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros.
+  split.
+  - apply leb_complete.
+  - apply leb_correct.
+Qed.
 
 Module R.
 
@@ -8716,11 +8727,11 @@ End R.
       Hint: choose your induction carefully! *)
 
 Inductive subseq : list nat -> list nat -> Prop :=
-| nil_is_subseq: forall (l2: list nat), subseq [] l2
-| combine_subseq: forall (l1 l2: list nat) (x: nat),
+| first_case: forall (l2: list nat), subseq [] l2
+| second_case: forall (l1 l2: list nat) (x: nat),
     subseq l1 l2  ->
     subseq (x :: l1) (x :: l2)
-| subseq_larger: forall (l1 l2: list nat) (x: nat),
+| third_case: forall (l1 l2: list nat) (x: nat),
     subseq l1 l2 -> subseq l1 (x :: l2).
 
 Theorem subseq_refl : forall (l: list nat),
@@ -8728,8 +8739,8 @@ Theorem subseq_refl : forall (l: list nat),
 Proof.
   intros.
   induction l as [| h t IH].
-  - apply nil_is_subseq.
-  - apply combine_subseq. apply IH.
+  - apply first_case.
+  - apply second_case. apply IH.
 Qed.
 
 Theorem subseq_app : forall (l1 l2 l3: list nat),
@@ -8737,35 +8748,9 @@ Theorem subseq_app : forall (l1 l2 l3: list nat),
 Proof.
   intros.
   induction H.
-  - apply nil_is_subseq.
-  - simpl. apply combine_subseq. apply IHsubseq.
-  - simpl. apply subseq_larger. apply IHsubseq.
-Qed.
-
-Theorem subseq_trans :  forall (l1 l2 l3: list nat),
-  subseq l1 l2 /\ subseq l2 l3 -> subseq l1 l3.
-Proof.
-  intros.
-  destruct H.
-  generalize dependent H.
-  generalize dependent l1.
-  induction H0.
-  - intros.
-    inversion H.
-    apply nil_is_subseq.
-  - intros.
-    inversion H.
-    + apply nil_is_subseq.
-    + apply combine_subseq.
-      apply IHsubseq.
-      apply H3.
-    + apply subseq_larger.
-      apply IHsubseq.
-      apply H3.
-  - intros.
-    apply subseq_larger.
-    apply IHsubseq.
-    apply H.
+  - apply first_case.
+  - simpl. apply second_case. apply IHsubseq.
+  - simpl. apply third_case. apply IHsubseq.
 Qed.
 
 (** **** Exercise: 2 stars, standard, optional (R_provability2)
